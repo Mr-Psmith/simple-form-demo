@@ -51,8 +51,6 @@ const SimpleInput = (props) => {
       return;
     }
 
-
-
             // if (enteredName.trim() === "") {
             //   /* so if the value is empty, we seize the app exec */
             //   setEnteredNameIsValid(false);
@@ -65,13 +63,19 @@ const SimpleInput = (props) => {
     console.log(enteredValue); */
     setEnteredName(""); /* resetting */
     setEnteredNameTouched(false);
-    /* nameInputref.current.value = ""; This is resetting too, vbut this we should not do as this would directly manipulate the DOM*/
+    /* nameInputref.current.value = ""; This is resetting too, but this we should not do as this would directly manipulate the DOM*/
   };
 
   const nameInputClasses = nameInputIsValid
     ? "form-control invalid"
     : "form-control";
 
+  const emailInputChangeHandler = (event) => {
+
+  };
+
+
+  
   return (
     <form onSubmit={formSubmissionHandler}>
       <div className={nameInputClasses}>
@@ -83,6 +87,20 @@ const SimpleInput = (props) => {
           onChange={nameInputChangeHandler}
           value={enteredName}
           onBlur={nameInputBlurHandler}
+        />
+        {nameInputIsValid && (
+          <p className="error-text">Name must not be empty</p>
+        )}
+      </div>
+      <div className={nameInputClasses}>
+        <label htmlFor="name">Your Name</label>
+        <input
+          /* ref={nameInputref} */
+          type="text"
+          id="email"
+          onChange={emailInputChangeHandler}
+          value={enteredEmail}
+          onBlur={emailInputBlurHandler}
         />
         {nameInputIsValid && (
           <p className="error-text">Name must not be empty</p>
