@@ -1,15 +1,28 @@
 import { useState } from "react";
 
+//import useInput from "../hooks/use-input";
+
 const BasicForm = (props) => {
+  //const {enteredData, setEnteredData, enteredDataError, setEnteredDataError, dataHandler, clickedOutHandler, reset} = useInput();
   const [enteredFirstName, setEnteredFirstName] = useState("");
   const [enteredFirstNameError, setEnteredFirstNameError] = useState(false);
-  /* const [firstNameTuched, setFirstNameTuched] = useState(false); The "problem" is that I dont need the "tuchState", as my logic isnt inverted as max's is.....*/
+  // const [firstNameTuched, setFirstNameTuched] = useState(false); //The "problem" is that I dont need the "tuchState", as my logic isnt inverted as max's is.....
+  // const enteredFirstNameValid = enteredFirstName.trim() !== ""; /* Bec it is reevaluating at every keystroke(onChange Handlers).... BUT if I use this I can leave out the enteredFirstNameError, but I will need the tuchState */
+              //For me my solution doesnt seems to be more difficult than Max's is 
 
   const [enteredLastName, setEnteredLastName] = useState("");
   const [enteredLastNameError, setEnteredLastNameError] = useState(false);
 
   const [enteredEmail, setEnteredEmail] = useState("");
   const [enteredEmailError, setEnteredEmailError] = useState(false);
+
+  /* could have done this with useEffect as well but this way its more simple */
+  let formIsValid  = false;
+  if(enteredFirstName && enteredLastName && enteredEmail) {
+    formIsValid = true;
+  } else {
+    formIsValid = false;
+  };
 
   const firstNameHandler = event => {
     setEnteredFirstName(event.target.value);
@@ -29,8 +42,10 @@ const BasicForm = (props) => {
       setEnteredEmailError(false);
     }
   };
+  
 
   const clickedOutFirstHandler = () => {
+    // setFirstNameTuched(true);
     if (enteredFirstName.trim() === "") {
       setEnteredFirstNameError(true);
     }
@@ -50,9 +65,11 @@ const BasicForm = (props) => {
     event.preventDefault();
     if (enteredFirstName.trim() === "") {
       setEnteredFirstNameError(true);
-    } if (enteredLastName.trim() === "") {
+    } 
+    if (enteredLastName.trim() === "") {
       setEnteredLastNameError(true);
-    } if (enteredEmail.trim() === "") {
+    } 
+    if (enteredEmail.trim() === "") {
       setEnteredEmailError(true);
     } else {
       console.log("Everything is okay!");
@@ -60,13 +77,24 @@ const BasicForm = (props) => {
     if (enteredFirstName.trim() === "" || enteredLastName.trim() === "" || enteredEmail.trim() === "") {
       return;
     }
+    // if (enteredData.trim() === "") {
+    //   setEnteredDataError(true);
+    // }
+    // if (enteredData.trim() === "" ) {
+    //   return;
+    // }
     console.log(enteredFirstName);
     console.log(enteredLastName);
     console.log(enteredEmail);
     setEnteredFirstNameError(false);
     setEnteredLastNameError(false);
     setEnteredEmailError(false);
+    //reset();
   };
+
+  // const firstNameErr = !enteredFirstNameValid && firstNameTuched;
+
+  // const errorClass = enteredDataError ? "form-control invalid" : "form-control";
 
   const errorClass1 = enteredFirstNameError ? "form-control invalid" : "form-control";
   const errorClass2 = enteredLastNameError ? "form-control invalid" : "form-control";
@@ -93,7 +121,7 @@ const BasicForm = (props) => {
         {enteredEmailError && <p className="error-text">Please enter a Valid Email</p>}
       </div>
       <div className='form-actions'>
-        <button>Submit</button>
+        <button disabled={!formIsValid}>Submit</button>
       </div>
     </form>
   );
